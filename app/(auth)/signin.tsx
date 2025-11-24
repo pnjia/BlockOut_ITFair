@@ -5,7 +5,7 @@ import TextStyle from "@/components/TextStyle";
 import ViewStyle from "@/components/ViewStyle";
 import { Colors } from "@/constants/theme";
 import React from "react";
-import { Image, Pressable, View } from "react-native";
+import { Pressable, View } from "react-native";
 import GoogleIcon from "../../assets/images/google-icon.svg";
 
 const Signin = () => {
@@ -89,18 +89,10 @@ const Signin = () => {
             justifyContent: "center",
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {typeof GoogleIcon === "number" ? (
-              <Image
-                source={GoogleIcon as any}
-                style={{ width: 20, height: 20 }}
-              />
-            ) : (
-              // If SVG transformer is configured, GoogleIcon will be a component
-              // otherwise it's an asset module (number) and we render via Image.
-              <GoogleIcon width={20} height={20} />
-            )}
-
+          <View
+            style={{ flexDirection: "row", alignItems: "center", columnGap: 8 }}
+          >
+            <GoogleIcon width={24} height={24} />
             <TextStyle
               style={{ textAlign: "center", marginLeft: 8 }}
               variant="h3"
