@@ -1,0 +1,15 @@
+import React from "react";
+import { StyleSheet, View, ViewStyle } from "react-native";
+
+type SpacerProps = {
+  width?: number | string;
+  height?: number | string;
+};
+
+const Spacer = ({ width = "100%", height = 40 }: SpacerProps) => {
+  return <View style={{ width, height } as ViewStyle} />;
+};
+
+export default Spacer;
+
+const styles = StyleSheet.create({});
