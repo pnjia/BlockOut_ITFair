@@ -1,15 +1,12 @@
-import { Text, View } from "react-native";
+import TextStyle from "@/components/TextStyle";
+import ViewStyle from "@/components/ViewStyle";
+import { Link } from "expo-router";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <ViewStyle>
+      <TextStyle>Percobaan</TextStyle>
+      <Link href="/(auth)/signin">Signin</Link>
+    </ViewStyle>
   );
 }
