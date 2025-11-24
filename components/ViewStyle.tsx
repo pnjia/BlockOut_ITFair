@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/theme";
 import React from "react";
-import { StyleSheet, View, ViewProps } from "react-native";
+import { View, ViewProps } from "react-native";
 
 const ViewStyle = ({ style, ...props }: ViewProps) => {
   return (
@@ -20,5 +20,3 @@ const ViewStyle = ({ style, ...props }: ViewProps) => {
 };
 
 export default ViewStyle;
-
-const styles = StyleSheet.create({});

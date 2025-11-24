@@ -7,5 +7,3 @@ const authLayout = () => {
 };
 
 export default authLayout;
-
-const styles = StyleSheet.create({});

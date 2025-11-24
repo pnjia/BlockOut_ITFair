@@ -23,5 +23,3 @@ const InputStyle = ({ style, ...props }: TextInputProps) => {
 };
 
 export default InputStyle;
-
-const styles = StyleSheet.create({});
