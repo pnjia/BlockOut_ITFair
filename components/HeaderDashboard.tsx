@@ -1,0 +1,64 @@
+import TextStyle from "@/components/TextStyle";
+import React from "react";
+import { View } from "react-native";
+import AvatarIcon from "../assets/images/avatar.svg";
+import CoinIcon from "../assets/images/coin.svg";
+import FireIcon from "../assets/images/fireStreak.svg";
+
+const HeaderDashboard = () => {
+  return (
+    <View
+      style={{
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 10,
+      }}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 2,
+          justifyContent: "center",
+        }}
+      >
+        <FireIcon width={30} height={30} />
+        <TextStyle variant="h3" color="quarternary">
+          {4} Days
+        </TextStyle>
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 2,
+          justifyContent: "center",
+        }}
+      >
+        <CoinIcon width={30} height={30} />
+        <TextStyle variant="h3" color="quarternary">
+          999 XP
+        </TextStyle>
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 4,
+        }}
+      >
+        <TextStyle variant="h3" color="quarternary">
+          {"user123"}
+        </TextStyle>
+        <AvatarIcon width={50} height={50} />
+      </View>
+    </View>
+  );
+};
+
+export default HeaderDashboard;
