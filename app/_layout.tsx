@@ -1,7 +1,8 @@
+import { Colors } from "@/constants/theme";
 import * as Font from "expo-font";
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { StatusBar } from "react-native";
 
 export default function RootLayout() {
   const [loaded, setLoaded] = useState(false);
@@ -20,10 +21,12 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar translucent={true} backgroundColor={Colors.primary} />
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="test" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
       </Stack>
     </>
   );
