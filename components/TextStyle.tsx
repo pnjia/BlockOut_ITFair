@@ -41,7 +41,12 @@ const TextStyle = ({
   return (
     <Text
       style={[
-        { fontFamily: GlobalStyles.fontRegular, color: colorValue, fontSize },
+        {
+          fontFamily: GlobalStyles.fontRegular,
+          color: colorValue,
+          fontSize,
+          lineHeight: fontSize * 1.2,
+        },
         style,
       ]}
       {...props}

@@ -4,7 +4,7 @@ export const GlobalStyles = {
 
 export const Colors = {
   primary: "#222831",
-  secondary: "#393E46",
+  secondary: "#6e737b",
   tertiary: "#00ADB5",
   quarternary: "#EEEEEE",
 };
