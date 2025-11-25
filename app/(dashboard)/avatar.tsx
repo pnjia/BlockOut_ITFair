@@ -1,12 +1,23 @@
-import TextStyle from "@/components/TextStyle";
+import HeaderDashboard from "@/components/HeaderDashboard";
 import ViewStyle from "@/components/ViewStyle";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 const Avatar = () => {
   return (
     <ViewStyle>
-      <TextStyle>avatar</TextStyle>
+      <View
+        style={{
+          width: "85%",
+          height: "100%",
+          paddingTop: 60,
+          paddingBottom: 60,
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        <HeaderDashboard />
+      </View>
     </ViewStyle>
   );
 };
