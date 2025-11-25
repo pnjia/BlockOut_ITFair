@@ -1,11 +1,23 @@
-import TextStyle from "@/components/TextStyle";
+import HeaderDashboard from "@/components/HeaderDashboard";
 import ViewStyle from "@/components/ViewStyle";
 import React from "react";
+import { View } from "react-native";
 
 const Shop = () => {
   return (
     <ViewStyle>
-      <TextStyle>shop</TextStyle>
+      <View
+        style={{
+          width: "85%",
+          height: "100%",
+          paddingTop: 60,
+          paddingBottom: 60,
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        <HeaderDashboard />
+      </View>
     </ViewStyle>
   );
 };
