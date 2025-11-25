@@ -4,11 +4,24 @@ import Spacer from "@/components/Spacer";
 import TextStyle from "@/components/TextStyle";
 import ViewStyle from "@/components/ViewStyle";
 import { Colors } from "@/constants/theme";
+import { router } from "expo-router";
 import React from "react";
 import { Pressable, View } from "react-native";
 import GoogleIcon from "../../assets/images/google-icon.svg";
 
 const Signin = () => {
+  const handleForgotPassword = () => {
+    router.push("/(auth)/forgotPassword");
+  };
+
+  const handleSignin = () => {
+    router.push("/blockout");
+  };
+
+  const handleSignup = () => {
+    router.push("/(auth)/signup");
+  };
+
   return (
     <ViewStyle>
       <ViewStyle
@@ -55,20 +68,21 @@ const Signin = () => {
 
         <Spacer height={20} />
 
-        <TextStyle
+        <Pressable
           style={{ alignSelf: "flex-end" }}
-          variant="body"
-          color="tertiary"
+          onPress={handleForgotPassword}
         >
-          Forgot Password?
-        </TextStyle>
+          <TextStyle variant="body" color="tertiary">
+            Forgot Password?
+          </TextStyle>
+        </Pressable>
 
         <Spacer height={20} />
 
         <RetroButton
           style={{ width: "100%" }}
           title="Sign In"
-          onPress={() => {}}
+          onPress={handleSignin}
         />
 
         <Spacer height={20} />
@@ -102,6 +116,17 @@ const Signin = () => {
             </TextStyle>
           </View>
         </Pressable>
+
+        <Spacer height={20} />
+
+        <TextStyle variant="body" color="quarternary">
+          Don&apos;t have an account?{" "}
+          <Pressable onPress={handleSignup}>
+            <TextStyle variant="body" color="tertiary">
+              Sign Up
+            </TextStyle>
+          </Pressable>
+        </TextStyle>
       </ViewStyle>
     </ViewStyle>
   );
