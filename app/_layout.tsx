@@ -53,6 +53,17 @@ export default function RootLayout() {
             presentation: "card",
           }}
         />
+        <Stack.Screen
+          name="(notification)"
+          options={{ animation: "fade", animationDuration: 50 }}
+        />
+        <Stack.Screen
+          name="(workout)"
+          options={{
+            animation: "fade",
+            animationDuration: 50,
+          }}
+        />
       </Stack>
     </View>
   );
