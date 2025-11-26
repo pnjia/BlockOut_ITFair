@@ -27,7 +27,7 @@ const ForgotPassword = () => {
           justifyContent: "flex-start",
         }}
       >
-        <Header title="Forgot Password" showBack={true} />
+        <Header title="Forgot Password" />
         <TextStyle variant="h3" color="tertiary">
           Enter your registered phone number. We&apos;ll send you instructions
           to reset your password

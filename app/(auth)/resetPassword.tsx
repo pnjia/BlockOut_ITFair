@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import InputStyle from "@/components/InputStyle";
 import RetroButton from "@/components/RetroButton";
 import Spacer from "@/components/Spacer";
@@ -33,6 +34,7 @@ const ResetPassword = () => {
           justifyContent: "flex-start",
         }}
       >
+        <Header title="Reset Password" />
         <TextStyle variant="h3" color="tertiary">
           Enter your registered phone number. We&apos;ll send you instructions
           to reset your password
