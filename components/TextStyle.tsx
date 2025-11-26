@@ -1,8 +1,8 @@
 import { Colors, FontSizes, GlobalStyles } from "@/constants/theme";
-import React from "react";
+import React, { useMemo } from "react";
 import { TextStyle as RNTextStyle, Text, TextProps } from "react-native";
 
-type Variant = "appTitle" | "h1" | "h2" | "h3" | "body";
+type Variant = "appTitle" | "h1" | "h2" | "h3" | "h4" | "body";
 
 type ColorKey = keyof typeof Colors;
 
@@ -22,38 +22,36 @@ const TextStyle = ({
   children,
   ...props
 }: Props) => {
-  const fontSize = (FontSizes as any)[variant] ?? FontSizes.body;
+  const textStyle = useMemo(() => {
+    const fontSize = (FontSizes as any)[variant] ?? FontSizes.body;
 
-  // Resolve color: if `color` matches a Colors key use that, otherwise treat it as a raw color string.
-  let colorValue: string = Colors.quarternary;
-  if (color) {
-    // If the provided color is one of the keys of Colors, map it
-    if (
-      typeof color === "string" &&
-      (Colors as Record<string, string>)[color]
-    ) {
-      colorValue = (Colors as Record<string, string>)[color];
-    } else if (typeof color === "string") {
-      colorValue = color;
+    // Resolve color: if `color` matches a Colors key use that, otherwise treat it as a raw color string.
+    let colorValue: string = Colors.quarternary;
+    if (color) {
+      // If the provided color is one of the keys of Colors, map it
+      if (
+        typeof color === "string" &&
+        (Colors as Record<string, string>)[color]
+      ) {
+        colorValue = (Colors as Record<string, string>)[color];
+      } else if (typeof color === "string") {
+        colorValue = color;
+      }
     }
-  }
+
+    return {
+      fontFamily: GlobalStyles.fontRegular,
+      color: colorValue,
+      fontSize,
+      lineHeight: fontSize * 1.2,
+    };
+  }, [variant, color]);
 
   return (
-    <Text
-      style={[
-        {
-          fontFamily: GlobalStyles.fontRegular,
-          color: colorValue,
-          fontSize,
-          lineHeight: fontSize * 1.2,
-        },
-        style,
-      ]}
-      {...props}
-    >
+    <Text style={[textStyle, style]} {...props}>
       {children}
     </Text>
   );
 };
 
-export default TextStyle;
+export default React.memo(TextStyle);

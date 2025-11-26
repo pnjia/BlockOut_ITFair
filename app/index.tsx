@@ -16,7 +16,6 @@ export default function Index() {
       <TextStyle>Percobaan</TextStyle>
       <Link href="/(auth)/signin">Signin</Link>
       <Link href="/(auth)/signup">Signup</Link>
-      <Link href="/test">Test</Link>
     </ViewStyle>
   );
 }

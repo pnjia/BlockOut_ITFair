@@ -16,7 +16,6 @@ const InputStyle = ({ style, ...props }: TextInputProps) => {
           color: Colors.quarternary,
           fontSize: FontSizes.body,
           fontFamily: GlobalStyles.fontRegular,
-    
         },
         style,
       ]}
@@ -25,4 +24,4 @@ const InputStyle = ({ style, ...props }: TextInputProps) => {
   );
 };
 
-export default InputStyle;
+export default React.memo(InputStyle);

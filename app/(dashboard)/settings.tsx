@@ -7,162 +7,122 @@ import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { router } from "expo-router";
 import React from "react";
 import { Pressable, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const Settings = () => {
-  const handleAccountPress = () => {
-    // Handle account settings press
-    router.navigate("/(account)/account");
-  };
-  const handleNotificationsPress = () => {
-    // Handle notifications settings press
-  };
-  const handleWorkoutPress = () => {
-    // Handle workout preferences press
-  };
-  const handleLogoutPress = () => {
-    // Handle logout press
-  };
-  return (
-    <ViewStyle>
+// Memoize SettingItem component
+const SettingItem = React.memo(
+  ({
+    icon,
+    iconLibrary = "ionicons",
+    title,
+    onPress,
+  }: {
+    icon: string;
+    iconLibrary?: "ionicons" | "simpleline";
+    title: string;
+    onPress: () => void;
+  }) => (
+    <Pressable onPress={onPress}>
       <View
         style={{
-          width: "85%",
-          height: "100%",
-          justifyContent: "flex-start",
-          paddingTop: 60,
-          paddingBottom: 60,
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingVertical: 15,
         }}
       >
-        <TextStyle variant="h1" color="tertiary">
-          Settings
-        </TextStyle>
-
-        <Spacer height={40} />
-
-        <View style={{ width: "100%", rowGap: 20 }}>
-          <Pressable onPress={handleAccountPress}>
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 15,
-              }}
-            >
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 15 }}
-              >
-                <Ionicons
-                  name="person-outline"
-                  size={40}
-                  color={Colors.quarternary}
-                />
-                <TextStyle variant="h2" color="quarternary">
-                  Account
-                </TextStyle>
-              </View>
-              <Ionicons
-                name="chevron-forward-sharp"
-                size={30}
-                color={Colors.quarternary}
-              />
-            </View>
-          </Pressable>
-
-          <Pressable onPress={handleNotificationsPress}>
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 15,
-              }}
-            >
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 15 }}
-              >
-                <Ionicons
-                  name="notifications-outline"
-                  size={40}
-                  color={Colors.quarternary}
-                />
-                <TextStyle variant="h2" color="quarternary">
-                  Notifications
-                </TextStyle>
-              </View>
-              <Ionicons
-                name="chevron-forward-sharp"
-                size={30}
-                color={Colors.quarternary}
-              />
-            </View>
-          </Pressable>
-
-          <Pressable onPress={handleWorkoutPress}>
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 15,
-              }}
-            >
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 15 }}
-              >
-                <Ionicons
-                  name="barbell-outline"
-                  size={40}
-                  color={Colors.quarternary}
-                />
-                <TextStyle variant="h2" color="quarternary">
-                  Workout Preferences
-                </TextStyle>
-              </View>
-              <Ionicons
-                name="chevron-forward-sharp"
-                size={30}
-                color={Colors.quarternary}
-              />
-            </View>
-          </Pressable>
-
-          <Pressable onPress={handleLogoutPress}>
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 15,
-              }}
-            >
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 15 }}
-              >
-                <SimpleLineIcons
-                  name="logout"
-                  size={40}
-                  color={Colors.quarternary}
-                />
-                <TextStyle variant="h2" color="quarternary">
-                  Logout
-                </TextStyle>
-              </View>
-              <Ionicons
-                name="chevron-forward-sharp"
-                size={30}
-                color={Colors.quarternary}
-              />
-            </View>
-          </Pressable>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
+          {iconLibrary === "simpleline" ? (
+            <SimpleLineIcons
+              name={icon as any}
+              size={30}
+              color={Colors.quarternary}
+            />
+          ) : (
+            <Ionicons name={icon as any} size={30} color={Colors.quarternary} />
+          )}
+          <TextStyle variant="h3" color="quarternary">
+            {title}
+          </TextStyle>
         </View>
+        <Ionicons
+          name="chevron-forward-sharp"
+          size={30}
+          color={Colors.quarternary}
+        />
       </View>
-    </ViewStyle>
+    </Pressable>
+  )
+);
+
+const Settings = () => {
+  const handleAccountPress = React.useCallback(() => {
+    router.push({
+      pathname: "/(account)/accountIndex",
+    });
+  }, []);
+
+  const handleNotificationsPress = React.useCallback(() => {
+    // Handle notifications settings press
+  }, []);
+
+  const handleWorkoutPress = React.useCallback(() => {
+    // Handle workout preferences press
+  }, []);
+
+  const handleLogoutPress = React.useCallback(() => {
+    // Handle logout press
+  }, []);
+
+  return (
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: Colors.primary }}
+      edges={["top"]}
+    >
+      <ViewStyle>
+        <View
+          style={{
+            width: "85%",
+            height: "100%",
+            justifyContent: "flex-start",
+            paddingTop: 60,
+            paddingBottom: 60,
+          }}
+        >
+          <TextStyle variant="h1" color="tertiary">
+            Settings
+          </TextStyle>
+
+          <Spacer height={30} />
+
+          <View style={{ width: "100%", rowGap: 20 }}>
+            <SettingItem
+              icon="person-outline"
+              title="Account"
+              onPress={handleAccountPress}
+            />
+            <SettingItem
+              icon="notifications-outline"
+              title="Notifications"
+              onPress={handleNotificationsPress}
+            />
+            <SettingItem
+              icon="barbell-outline"
+              title="Workout Preferences"
+              onPress={handleWorkoutPress}
+            />
+            <SettingItem
+              icon="logout"
+              iconLibrary="simpleline"
+              title="Logout"
+              onPress={handleLogoutPress}
+            />
+          </View>
+        </View>
+      </ViewStyle>
+    </SafeAreaView>
   );
 };
 
-export default Settings;
+export default React.memo(Settings);

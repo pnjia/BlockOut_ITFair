@@ -6,16 +6,22 @@ import ViewStyle from "@/components/ViewStyle";
 import { Colors } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Pressable, View } from "react-native";
 
 const ResetPassword = () => {
-  const handleResetPassword = () => {
+  const handleResetPassword = useCallback(() => {
     router.push("/signin");
-  };
+  }, []);
 
   const [newVisible, setNewVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
+
+  const toggleNewVisible = useCallback(() => setNewVisible((v) => !v), []);
+  const toggleConfirmVisible = useCallback(
+    () => setConfirmVisible((v) => !v),
+    []
+  );
   return (
     <ViewStyle>
       <View
@@ -48,7 +54,7 @@ const ResetPassword = () => {
               accessibilityLabel={
                 newVisible ? "Hide password" : "Show password"
               }
-              onPress={() => setNewVisible((v) => !v)}
+              onPress={toggleNewVisible}
               style={{
                 position: "absolute",
                 right: 8,
@@ -81,7 +87,7 @@ const ResetPassword = () => {
               accessibilityLabel={
                 confirmVisible ? "Hide password" : "Show password"
               }
-              onPress={() => setConfirmVisible((v) => !v)}
+              onPress={toggleConfirmVisible}
               style={{
                 position: "absolute",
                 right: 8,
@@ -108,4 +114,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default React.memo(ResetPassword);

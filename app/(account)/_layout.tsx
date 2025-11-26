@@ -1,16 +1,20 @@
+import { Colors } from "@/constants/theme";
 import { Stack } from "expo-router";
 import React from "react";
 
 const AccountLayout = () => {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: "Account" }} />
-      <Stack.Screen name="editProfile" options={{ title: "Edit Profile" }} />
-      <Stack.Screen
-        name="deleteAccount"
-        options={{ title: "Delete Account" }}
-      />
-    </Stack>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: Colors.primary,
+        },
+        animation: "slide_from_right",
+        animationDuration: 50,
+        freezeOnBlur: true,
+      }}
+    />
   );
 };
 

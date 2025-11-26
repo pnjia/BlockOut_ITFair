@@ -8,9 +8,9 @@ const ViewStyle = ({ style, ...props }: ViewProps) => {
       style={[
         {
           flex: 1,
+          backgroundColor: Colors.primary,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: Colors.primary,
         },
         style,
       ]}
@@ -19,4 +19,4 @@ const ViewStyle = ({ style, ...props }: ViewProps) => {
   );
 };
 
-export default ViewStyle;
+export default React.memo(ViewStyle);

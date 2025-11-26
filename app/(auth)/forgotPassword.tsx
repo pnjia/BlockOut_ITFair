@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import InputStyle from "@/components/InputStyle";
 import RetroButton from "@/components/RetroButton";
 import Spacer from "@/components/Spacer";
@@ -8,27 +9,28 @@ import React from "react";
 import { Pressable, View } from "react-native";
 
 const ForgotPassword = () => {
-  const handleSend = () => {
+  const handleSend = React.useCallback(() => {
     router.push("/(auth)/resetPassword");
-  };
+  }, []);
 
-  const handleBackLogin = () => {
+  const handleBackLogin = React.useCallback(() => {
     router.push("/(auth)/signin");
-  };
+  }, []);
   return (
     <ViewStyle>
       <View
         style={{
           width: "85%",
           height: "100%",
-          paddingTop: 30,
+          paddingTop: 60,
           paddingBottom: 60,
           justifyContent: "flex-start",
         }}
       >
+        <Header title="Forgot Password" showBack={true} />
         <TextStyle variant="h3" color="tertiary">
-          Enter your registered phone number. We’ll send you instructions to
-          reset your password
+          Enter your registered phone number. We&apos;ll send you instructions
+          to reset your password
         </TextStyle>
 
         <Spacer height={30} />
@@ -55,4 +57,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default React.memo(ForgotPassword);

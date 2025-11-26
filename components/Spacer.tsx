@@ -10,4 +10,4 @@ const Spacer = ({ width = "100%", height = 40 }: SpacerProps) => {
   return <View style={{ width, height } as ViewStyle} />;
 };
 
-export default Spacer;
+export default React.memo(Spacer);

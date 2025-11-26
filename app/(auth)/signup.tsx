@@ -8,26 +8,35 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { router } from "expo-router";
 
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Platform, Pressable, View } from "react-native";
 
 const Signup = () => {
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
-  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (Platform.OS === "ios") {
-      setShowPicker(false);
-    }
+  const onChange = useCallback(
+    (event: DateTimePickerEvent, selectedDate?: Date) => {
+      if (Platform.OS === "ios") {
+        setShowPicker(false);
+      }
 
-    if (selectedDate) {
-      setDate(selectedDate);
-    }
-  };
+      if (selectedDate) {
+        setDate(selectedDate);
+      }
+    },
+    []
+  );
 
-  const handleSignin = () => {
+  const handleSignin = useCallback(() => {
     router.push("/(auth)/signin");
-  };
+  }, []);
+
+  const handleShowPicker = useCallback(() => {
+    setShowPicker(true);
+  }, []);
+
+  const dateString = useMemo(() => date.toDateString(), [date]);
 
   return (
     <ViewStyle>
@@ -103,15 +112,12 @@ const Signup = () => {
 
         <Spacer height={10} />
 
-        <Pressable
-          style={{ width: "100%" }}
-          onPress={() => setShowPicker(true)}
-        >
+        <Pressable style={{ width: "100%" }} onPress={handleShowPicker}>
           <InputStyle
             style={{ width: "100%" }}
             pointerEvents="none"
             editable={false}
-            value={date.toDateString()}
+            value={dateString}
           />
         </Pressable>
 
@@ -159,4 +165,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default React.memo(Signup);

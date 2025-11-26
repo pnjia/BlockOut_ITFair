@@ -1,4 +1,4 @@
-import { Colors, FontSizes, GlobalStyles } from "@/constants/theme";
+import { Colors } from "@/constants/theme";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
@@ -8,44 +8,25 @@ const authLayout = () => {
     <>
       {/* make the status bar follow the auth background (dark) */}
       <StatusBar translucent={true} backgroundColor={Colors.primary} />
-      <Stack>
-        <Stack.Screen name="signin" options={{ headerShown: false }} />
-        <Stack.Screen name="signup" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="forgotPassword"
-          options={{
-            headerTitle: "Forgot Password",
-            headerTitleStyle: {
-              fontSize: FontSizes.h2,
-
-              fontFamily: GlobalStyles.fontRegular,
-            },
-            headerStyle: {
-              backgroundColor: Colors.primary,
-            },
-            headerShadowVisible: false,
-            headerTintColor: Colors.tertiary,
-          }}
-        />
-        <Stack.Screen
-          name="resetPassword"
-          options={{
-            headerTitle: "Reset Password",
-            headerTitleStyle: {
-              fontSize: FontSizes.h2,
-
-              fontFamily: GlobalStyles.fontRegular,
-            },
-            headerStyle: {
-              backgroundColor: Colors.primary,
-            },
-            headerShadowVisible: false,
-            headerTintColor: Colors.tertiary,
-          }}
-        />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: Colors.primary,
+          },
+          navigationBarColor: Colors.primary,
+          animation: "fade",
+          animationDuration: 50,
+          freezeOnBlur: true,
+        }}
+      >
+        <Stack.Screen name="signin" />
+        <Stack.Screen name="signup" />
+        <Stack.Screen name="forgotPassword" />
+        <Stack.Screen name="resetPassword" />
       </Stack>
     </>
   );
 };
 
-export default authLayout;
+export default React.memo(authLayout);

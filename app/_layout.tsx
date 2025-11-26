@@ -1,34 +1,59 @@
 import { Colors } from "@/constants/theme";
-import * as Font from "expo-font";
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { View } from "react-native";
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, error] = useFonts({
+    jersey10: require("../assets/fonts/Jersey10-Regular.ttf"),
+  });
 
   useEffect(() => {
-    async function loadFonts() {
-      await Font.loadAsync({
-        jersey10: require("../assets/fonts/Jersey10-Regular.ttf"),
-      });
-      setLoaded(true);
+    if (loaded || error) {
+      SplashScreen.hideAsync();
     }
-    loadFonts();
-  }, []);
+  }, [loaded, error]);
 
-  if (!loaded) return null;
+  if (!loaded && !error) return null;
 
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: Colors.primary }}>
       <StatusBar translucent={true} backgroundColor={Colors.primary} />
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="test" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
-        <Stack.Screen name="(account)" options={{ headerShown: false }} />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: Colors.primary,
+          },
+          animation: "slide_from_right",
+          animationDuration: 200,
+          freezeOnBlur: true,
+        }}
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen
+          name="(auth)"
+          options={{ animation: "fade", animationDuration: 300 }}
+        />
+        <Stack.Screen
+          name="(dashboard)"
+          options={{ animation: "fade", animationDuration: 50 }}
+        />
+        <Stack.Screen
+          name="(account)"
+          options={{
+            animation: "slide_from_right",
+            animationDuration: 50,
+            presentation: "card",
+          }}
+        />
       </Stack>
-    </>
+    </View>
   );
 }
