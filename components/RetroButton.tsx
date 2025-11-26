@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     opacity: 0.25,
   },
   buttonLayer: {
-    paddingVertical: 12,
+    paddingVertical: 10,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 0,
