@@ -1,11 +1,11 @@
 import Header from "@/components/Header";
 import TextStyle from "@/components/TextStyle";
-import ViewStyle from "@/components/ViewStyle";
 import { Colors } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import { Pressable, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AccountIndex = () => {
   const handleEditProfilePress = () => {
@@ -29,90 +29,102 @@ const AccountIndex = () => {
   }, []);
 
   return (
-    <ViewStyle>
+    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
       <View
         style={{
-          width: "85%",
-          paddingTop: 60,
-          justifyContent: "flex-start",
+          width: "100%",
           height: "100%",
+          alignItems: "center",
         }}
       >
-        <Header title="Account" showBack={true} onBack={handleBack} />
-        <View style={{ width: "100%", rowGap: 10 }}>
-          <Pressable onPress={handleEditProfilePress}>
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 15,
-              }}
-            >
+        <View
+          style={{
+            width: "85%",
+            paddingTop: 20,
+            height: "100%",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Header title="Account" showBack={true} onBack={handleBack} />
+          <View style={{ width: "100%", rowGap: 10 }}>
+            <Pressable onPress={handleEditProfilePress}>
               <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 15 }}
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingVertical: 15,
+                }}
               >
-                <TextStyle variant="h3" color="quarternary">
-                  Edit Profile
-                </TextStyle>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 15,
+                  }}
+                >
+                  <TextStyle variant="h3" color="quarternary">
+                    Edit Profile
+                  </TextStyle>
+                </View>
+                <Ionicons
+                  name="chevron-forward-sharp"
+                  size={30}
+                  color={Colors.quarternary}
+                />
               </View>
-              <Ionicons
-                name="chevron-forward-sharp"
-                size={30}
-                color={Colors.quarternary}
-              />
-            </View>
-          </Pressable>
+            </Pressable>
 
-          <Pressable onPress={handleChangePasswordPress}>
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 15,
-              }}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TextStyle variant="h3" color="quarternary">
-                  Change Password
-                </TextStyle>
+            <Pressable onPress={handleChangePasswordPress}>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingVertical: 15,
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <TextStyle variant="h3" color="quarternary">
+                    Change Password
+                  </TextStyle>
+                </View>
+                <Ionicons
+                  name="chevron-forward-sharp"
+                  size={30}
+                  color={Colors.quarternary}
+                />
               </View>
-              <Ionicons
-                name="chevron-forward-sharp"
-                size={30}
-                color={Colors.quarternary}
-              />
-            </View>
-          </Pressable>
+            </Pressable>
 
-          <Pressable onPress={handleDeleteAccountPress}>
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 15,
-              }}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TextStyle variant="h3" color="quarternary">
-                  Delete Account
-                </TextStyle>
+            <Pressable onPress={handleDeleteAccountPress}>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingVertical: 15,
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <TextStyle variant="h3" color="quarternary">
+                    Delete Account
+                  </TextStyle>
+                </View>
+                <Ionicons
+                  name="chevron-forward-sharp"
+                  size={30}
+                  color={Colors.quarternary}
+                />
               </View>
-              <Ionicons
-                name="chevron-forward-sharp"
-                size={30}
-                color={Colors.quarternary}
-              />
-            </View>
-          </Pressable>
+            </Pressable>
+          </View>
         </View>
       </View>
-    </ViewStyle>
+    </SafeAreaView>
   );
 };
 

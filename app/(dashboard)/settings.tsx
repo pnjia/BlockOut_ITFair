@@ -64,11 +64,15 @@ const Settings = () => {
   }, []);
 
   const handleNotificationsPress = React.useCallback(() => {
-    // Handle notifications settings press
+    router.push({
+      pathname: "/(notification)/notification",
+    });
   }, []);
 
   const handleWorkoutPress = React.useCallback(() => {
-    // Handle workout preferences press
+    router.push({
+      pathname: "/(workout)/workoutPreferences",
+    });
   }, []);
 
   const handleLogoutPress = React.useCallback(() => {

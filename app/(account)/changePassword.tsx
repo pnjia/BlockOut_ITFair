@@ -3,12 +3,12 @@ import InputStyle from "@/components/InputStyle";
 import RetroButton from "@/components/RetroButton";
 import Spacer from "@/components/Spacer";
 import TextStyle from "@/components/TextStyle";
-import ViewStyle from "@/components/ViewStyle";
 import { Colors } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { Pressable, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ChangePassword = () => {
   const [oldVisible, setOldVisible] = useState(false);
@@ -28,106 +28,112 @@ const ChangePassword = () => {
     router.push("/(auth)/signin");
   };
   return (
-    <ViewStyle>
+    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
       <View
         style={{
-          width: "85%",
-          paddingTop: 60,
-          paddingBottom: 60,
-          justifyContent: "flex-start",
+          width: "100%",
           height: "100%",
+          alignItems: "center",
         }}
       >
-        <Header title={"Change Password"} />
-        <Spacer height={20} />
-        <View>
-          <TextStyle variant="h3" color="quarternary">
-            Old Password
-          </TextStyle>
-          <Spacer height={10} />
-          <View style={{ position: "relative", width: "100%" }}>
-            <InputStyle
-              placeholder="Enter old password"
-              secureTextEntry={!oldVisible}
-              style={{ paddingRight: 44 }}
-            />
-            <Pressable
-              accessibilityLabel={
-                oldVisible ? "Hide password" : "Show password"
-              }
-              onPress={toggleOldVisible}
-              style={{ position: "absolute", right: 8, top: 2, padding: 6 }}
-            >
-              <Ionicons
-                name={oldVisible ? "eye-outline" : "eye-off-outline"}
-                size={25}
-                color={Colors.quarternary}
+        <View
+          style={{
+            width: "85%",
+            height: "100%",
+            paddingTop: 20,
+          }}
+        >
+          <Header title={"Change Password"} />
+          <Spacer height={20} />
+          <View>
+            <TextStyle variant="h3" color="quarternary">
+              Old Password
+            </TextStyle>
+            <Spacer height={10} />
+            <View style={{ position: "relative", width: "100%" }}>
+              <InputStyle
+                placeholder="Enter old password"
+                secureTextEntry={!oldVisible}
+                style={{ paddingRight: 44 }}
               />
-            </Pressable>
+              <Pressable
+                accessibilityLabel={
+                  oldVisible ? "Hide password" : "Show password"
+                }
+                onPress={toggleOldVisible}
+                style={{ position: "absolute", right: 8, top: 2, padding: 6 }}
+              >
+                <Ionicons
+                  name={oldVisible ? "eye-outline" : "eye-off-outline"}
+                  size={25}
+                  color={Colors.quarternary}
+                />
+              </Pressable>
+            </View>
           </View>
-        </View>
 
-        <Spacer height={20} />
+          <Spacer height={20} />
 
-        <View>
-          <TextStyle variant="h3" color="quarternary">
-            New Password
-          </TextStyle>
-          <Spacer height={10} />
-          <View style={{ position: "relative", width: "100%" }}>
-            <InputStyle
-              placeholder="Enter new password"
-              secureTextEntry={!newVisible}
-              style={{ paddingRight: 44 }}
-            />
-            <Pressable
-              accessibilityLabel={
-                newVisible ? "Hide password" : "Show password"
-              }
-              onPress={toggleNewVisible}
-              style={{ position: "absolute", right: 8, top: 2, padding: 6 }}
-            >
-              <Ionicons
-                name={newVisible ? "eye-outline" : "eye-off-outline"}
-                size={25}
-                color={Colors.quarternary}
+          <View>
+            <TextStyle variant="h3" color="quarternary">
+              New Password
+            </TextStyle>
+            <Spacer height={10} />
+            <View style={{ position: "relative", width: "100%" }}>
+              <InputStyle
+                placeholder="Enter new password"
+                secureTextEntry={!newVisible}
+                style={{ paddingRight: 44 }}
               />
-            </Pressable>
+              <Pressable
+                accessibilityLabel={
+                  newVisible ? "Hide password" : "Show password"
+                }
+                onPress={toggleNewVisible}
+                style={{ position: "absolute", right: 8, top: 2, padding: 6 }}
+              >
+                <Ionicons
+                  name={newVisible ? "eye-outline" : "eye-off-outline"}
+                  size={25}
+                  color={Colors.quarternary}
+                />
+              </Pressable>
+            </View>
           </View>
-        </View>
 
-        <Spacer height={20} />
+          <Spacer height={20} />
 
-        <View>
-          <TextStyle variant="h3" color="quarternary">
-            Confirm New Password
-          </TextStyle>
-          <Spacer height={10} />
-          <View style={{ position: "relative", width: "100%" }}>
-            <InputStyle
-              placeholder="Confirm new password"
-              secureTextEntry={!confirmVisible}
-              style={{ paddingRight: 44 }}
-            />
-            <Pressable
-              accessibilityLabel={
-                confirmVisible ? "Hide password" : "Show password"
-              }
-              onPress={toggleConfirmVisible}
-              style={{ position: "absolute", right: 8, top: 2, padding: 6 }}
-            >
-              <Ionicons
-                name={confirmVisible ? "eye-outline" : "eye-off-outline"}
-                size={25}
-                color={Colors.quarternary}
+          <View>
+            <TextStyle variant="h3" color="quarternary">
+              Confirm New Password
+            </TextStyle>
+            <Spacer height={10} />
+            <View style={{ position: "relative", width: "100%" }}>
+              <InputStyle
+                placeholder="Confirm new password"
+                secureTextEntry={!confirmVisible}
+                style={{ paddingRight: 44 }}
               />
-            </Pressable>
+              <Pressable
+                accessibilityLabel={
+                  confirmVisible ? "Hide password" : "Show password"
+                }
+                onPress={toggleConfirmVisible}
+                style={{ position: "absolute", right: 8, top: 2, padding: 6 }}
+              >
+                <Ionicons
+                  name={confirmVisible ? "eye-outline" : "eye-off-outline"}
+                  size={25}
+                  color={Colors.quarternary}
+                />
+              </Pressable>
+            </View>
           </View>
+          <Spacer height={30} />
+          <RetroButton title="Save" onPress={handleReset} />
         </View>
-        <Spacer height={30} />
-        <RetroButton title="Save" onPress={handleReset} />
       </View>
-    </ViewStyle>
+    </SafeAreaView>
   );
 };
 

@@ -3,7 +3,6 @@ import InputStyle from "@/components/InputStyle";
 import RetroButton from "@/components/RetroButton";
 import Spacer from "@/components/Spacer";
 import TextStyle from "@/components/TextStyle";
-import { Colors } from "@/constants/theme";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
@@ -35,10 +34,7 @@ const EditProfile = () => {
   const dateString = useMemo(() => date.toDateString(), [date]);
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: Colors.primary }}
-      edges={["top", "bottom"]}
-    >
+    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
       <View
         style={{
           width: "100%",
