@@ -75,6 +75,12 @@ const Settings = () => {
     });
   }, []);
 
+  const handleWalletPress = React.useCallback(() => {
+    router.push({
+      pathname: "/(wallet)/walletIndex",
+    });
+  }, []);
+
   const handleLogoutPress = React.useCallback(() => {
     // Handle logout press
   }, []);
@@ -115,6 +121,11 @@ const Settings = () => {
               icon="barbell-outline"
               title="Workout Preferences"
               onPress={handleWorkoutPress}
+            />
+            <SettingItem
+              icon="wallet-outline"
+              title="Wallet Settings"
+              onPress={handleWalletPress}
             />
             <SettingItem
               icon="logout"
