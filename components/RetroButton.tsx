@@ -15,6 +15,8 @@ interface RetroButtonProps {
   title?: string;
   onPress?: (event: GestureResponderEvent) => void;
   buttonColor?: string;
+  buttonTextColor?: string;
+  borderColor?: string;
   style?: StyleProp<ViewStyle>; // Supaya bisa menerima custom style dari luar
 }
 
@@ -22,6 +24,8 @@ const RetroButton: React.FC<RetroButtonProps> = ({
   title = "Log In",
   onPress,
   buttonColor = Colors.tertiary,
+  buttonTextColor = Colors.quarternary,
+  borderColor = "transparent",
   style,
 }) => {
   const [isPressed, setIsPressed] = useState(false);
@@ -33,9 +37,11 @@ const RetroButton: React.FC<RetroButtonProps> = ({
     () => [
       styles.buttonLayer,
       { backgroundColor: buttonColor },
+      // apply border only when provided
+      borderColor ? { borderWidth: 1, borderColor } : {},
       isPressed && styles.buttonPressed,
     ],
-    [buttonColor, isPressed]
+    [buttonColor, buttonTextColor, isPressed]
   );
 
   return (
@@ -50,7 +56,7 @@ const RetroButton: React.FC<RetroButtonProps> = ({
         onPressOut={handlePressOut}
         style={buttonStyle}
       >
-        <TextStyle variant="h3" color={Colors.quarternary}>
+        <TextStyle variant="h3" color={buttonTextColor}>
           {title}
         </TextStyle>
       </Pressable>
