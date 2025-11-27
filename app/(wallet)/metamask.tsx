@@ -3,7 +3,7 @@ import RetroButton from "@/components/RetroButton";
 import Spacer from "@/components/Spacer";
 import TextStyle from "@/components/TextStyle";
 import { Colors } from "@/constants/theme";
-import { Ionicons } from "@expo/vector-icons";
+import Fontisto from "@expo/vector-icons/Fontisto";
 import { router } from "expo-router";
 import React from "react";
 import { Pressable, View } from "react-native";
@@ -11,6 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Metamaskicon from "../../assets/images/metamask.svg";
 
 const Metamask = () => {
+  const [checked, setChecked] = React.useState(false);
+
   const handleCreateWalletPress = React.useCallback(() => {
     router.push({
       pathname: "/(wallet)/metamaskConnected",
@@ -50,20 +52,42 @@ const Metamask = () => {
               Trusted by millions, MetaMask is a secure wallet making the world
               of web3 accessible to all
             </TextStyle>
-
             <Metamaskicon width={100} height={100} />
+            <Pressable
+              onPress={() => setChecked((c) => !c)}
+              style={{
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+                gap: 15,
+              }}
+            >
+              {/* FIX: Bikin wrapper untuk kunci posisi ikon */}
+              <View
+                style={{
+                  width: 24, // sama dengan icon size
+                  height: 24,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Fontisto
+                  name={checked ? "checkbox-active" : "checkbox-passive"}
+                  color={Colors.tertiary}
+                  size={24}
+                />
+              </View>
 
-            <View style={{ width: "100%", flexDirection: "row", gap: 15 }}>
-              <Ionicons name="checkbox-outline" size={24} />
               <TextStyle variant="body" color="quarternary">
-                I agree to MetaMask&apos;s
+                I agree to MetaMask&apos;s{" "}
                 <Pressable>
                   <TextStyle variant="body" color="tertiary">
                     Terms of use
                   </TextStyle>
                 </Pressable>
               </TextStyle>
-            </View>
+            </Pressable>
 
             <RetroButton
               title="Create a new wallet"

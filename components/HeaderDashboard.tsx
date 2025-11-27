@@ -1,10 +1,11 @@
 import TextStyle from "@/components/TextStyle";
+import { Colors } from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import { Pressable, View } from "react-native";
 import AvatarIcon from "../assets/images/avatar.svg";
 import CoinIcon from "../assets/images/coin.svg";
-import FireIcon from "../assets/images/fireStreak.svg";
 
 const HeaderDashboard = () => {
   const handleAvatarPress = React.useCallback(() => {
@@ -30,7 +31,9 @@ const HeaderDashboard = () => {
           justifyContent: "center",
         }}
       >
-        <FireIcon width={30} height={30} />
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Ionicons name="flame" size={30} color={Colors.tertiary} />
+        </View>
         <TextStyle variant="h3" color="quarternary">
           {4} Days
         </TextStyle>

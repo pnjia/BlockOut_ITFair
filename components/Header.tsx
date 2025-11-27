@@ -26,8 +26,18 @@ const Header: React.FC<HeaderProps> = ({
       onBack();
       return;
     }
+    // Prefer router.back when there is history
     if (router.canGoBack()) {
       router.back();
+      return;
+    }
+    // Fallback: use a relative navigation to go "up" one segment.
+    // This handles cases where the same route was pushed twice and router.back()
+    // doesn't navigate as expected; if that fails, as a last resort replace to root.
+    try {
+      router.push("..");
+    } catch {
+      router.replace("/");
     }
   }, [onBack, router]);
 
