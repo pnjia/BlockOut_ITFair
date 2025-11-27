@@ -50,21 +50,21 @@ const HeaderDashboard = () => {
         </TextStyle>
       </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 4,
-        }}
-      >
-        <Pressable onPress={handleAvatarPress}>
+      <Pressable onPress={handleAvatarPress}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 4,
+          }}
+        >
           <TextStyle variant="h3" color="quarternary">
             {"user123"}
           </TextStyle>
           <AvatarIcon width={50} height={50} />
-        </Pressable>
-      </View>
+        </View>
+      </Pressable>
     </View>
   );
 };
