@@ -62,8 +62,8 @@ const HeaderDashboard = () => {
           <TextStyle variant="h3" color="quarternary">
             {"user123"}
           </TextStyle>
+          <AvatarIcon width={50} height={50} />
         </Pressable>
-        <AvatarIcon width={50} height={50} />
       </View>
     </View>
   );
