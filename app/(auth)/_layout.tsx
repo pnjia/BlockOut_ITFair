@@ -19,12 +19,7 @@ const authLayout = () => {
           animationDuration: 50,
           freezeOnBlur: true,
         }}
-      >
-        <Stack.Screen name="signin" />
-        <Stack.Screen name="signup" />
-        <Stack.Screen name="forgotPassword" />
-        <Stack.Screen name="resetPassword" />
-      </Stack>
+      ></Stack>
     </>
   );
 };

@@ -126,6 +126,11 @@ const Signin = () => {
               </TextStyle>
             </Pressable>
           </View>
+          <Spacer height={20} />
+          <RetroButton
+            title="Personalize"
+            onPress={() => router.push("/(personalize)")}
+          />
         </ViewStyle>
       </ViewStyle>
     </SafeAreaView>
