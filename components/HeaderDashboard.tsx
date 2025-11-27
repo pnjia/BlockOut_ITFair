@@ -1,11 +1,17 @@
 import TextStyle from "@/components/TextStyle";
+import { router } from "expo-router";
 import React from "react";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import AvatarIcon from "../assets/images/avatar.svg";
 import CoinIcon from "../assets/images/coin.svg";
 import FireIcon from "../assets/images/fireStreak.svg";
 
 const HeaderDashboard = () => {
+  const handleAvatarPress = React.useCallback(() => {
+    // Handle avatar press logic here
+    // navigate directly to the profile screen inside the (account) group
+    router.push({ pathname: "/(account)/myProfile" });
+  }, []);
   return (
     <View
       style={{
@@ -52,9 +58,11 @@ const HeaderDashboard = () => {
           gap: 4,
         }}
       >
-        <TextStyle variant="h3" color="quarternary">
-          {"user123"}
-        </TextStyle>
+        <Pressable onPress={handleAvatarPress}>
+          <TextStyle variant="h3" color="quarternary">
+            {"user123"}
+          </TextStyle>
+        </Pressable>
         <AvatarIcon width={50} height={50} />
       </View>
     </View>
