@@ -48,7 +48,7 @@ const ShopItemCard = ({
   );
 };
 
-export default ShopItemCard;
+export default React.memo(ShopItemCard);
 
 const styles = StyleSheet.create({
   container: {

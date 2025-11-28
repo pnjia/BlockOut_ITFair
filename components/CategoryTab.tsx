@@ -1,5 +1,5 @@
 import { FontSizes, GlobalStyles } from "@/constants/theme";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -16,6 +16,7 @@ interface CategoryTabProps {
   activeColor?: string;
   inactiveColor?: string;
   textColor?: string;
+  activeTextColor?: string;
   containerStyle?: ViewStyle;
   children?: (activeTab: string) => React.ReactNode;
 }
@@ -27,16 +28,24 @@ const CategoryTab: React.FC<CategoryTabProps> = ({
   activeColor = "#00bfa5",
   inactiveColor = "#1e1e2e",
   textColor = "#fff",
+  activeTextColor = "#fff",
   containerStyle,
   children,
 }) => {
-  const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]);
+  const [activeTab, setActiveTab] = useState(
+    defaultTab && tabs.includes(defaultTab) ? defaultTab : tabs[0]
+  );
+
+  useEffect(() => {
+    if (!defaultTab) return;
+    if (tabs.includes(defaultTab)) {
+      setActiveTab(defaultTab);
+    }
+  }, [defaultTab, tabs]);
 
   const handleTabPress = (tab: string) => {
     setActiveTab(tab);
-    if (onTabChange) {
-      onTabChange(tab);
-    }
+    onTabChange?.(tab);
   };
 
   return (
@@ -47,35 +56,36 @@ const CategoryTab: React.FC<CategoryTabProps> = ({
         contentContainerStyle={styles.scrollContent}
         style={styles.scrollView}
       >
-        {tabs.map((tab) => (
-          <Pressable
-            key={tab}
-            onPress={() => handleTabPress(tab)}
-            style={[
-              styles.btn,
-              {
-                borderColor: activeTab === tab ? activeColor : textColor,
-                backgroundColor: inactiveColor,
-              },
-              activeTab === tab && {
-                backgroundColor: activeColor,
-                borderColor: activeColor,
-              },
-            ]}
-          >
-            <Text
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab;
+          return (
+            <Pressable
+              key={tab}
+              onPress={() => handleTabPress(tab)}
               style={[
-                styles.text,
-                { color: textColor },
-                activeTab === tab && styles.textActive,
+                styles.btn,
+                {
+                  borderColor: isActive ? activeColor : textColor,
+                  backgroundColor: isActive ? activeColor : inactiveColor,
+                },
               ]}
             >
-              {tab}
-            </Text>
-          </Pressable>
-        ))}
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: isActive ? activeTextColor : textColor,
+                  },
+                ]}
+              >
+                {tab}
+              </Text>
+            </Pressable>
+          );
+        })}
       </ScrollView>
 
+      {/* Render children langsung — tidak pakai useMemo */}
       {children && <View style={styles.content}>{children(activeTab)}</View>}
     </View>
   );
@@ -85,7 +95,7 @@ export default React.memo(CategoryTab);
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: "flex-start",
+    width: "100%",
     minHeight: 40,
   },
   scrollView: {
@@ -107,10 +117,8 @@ const styles = StyleSheet.create({
     fontFamily: GlobalStyles.fontRegular,
     fontSize: FontSizes.h4,
   },
-  textActive: {
-    color: "#fff",
-  },
   content: {
-    flex: 1,
+    width: "100%",
+    marginTop: 16,
   },
 });
