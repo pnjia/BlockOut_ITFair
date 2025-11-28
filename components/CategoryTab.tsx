@@ -1,6 +1,13 @@
 import { FontSizes, GlobalStyles } from "@/constants/theme";
 import React, { useState } from "react";
-import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from "react-native";
 
 interface CategoryTabProps {
   tabs?: string[];
@@ -23,7 +30,6 @@ const CategoryTab: React.FC<CategoryTabProps> = ({
   containerStyle,
   children,
 }) => {
-  // State untuk menyimpan tab mana yang sedang aktif
   const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]);
 
   const handleTabPress = (tab: string) => {
@@ -35,16 +41,22 @@ const CategoryTab: React.FC<CategoryTabProps> = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {/* Bagian Navigasi (Segmented Control) */}
-      <View style={styles.navContainer}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+        style={styles.scrollView}
+      >
         {tabs.map((tab) => (
           <Pressable
             key={tab}
             onPress={() => handleTabPress(tab)}
             style={[
               styles.btn,
-              { borderColor: activeTab === tab ? activeColor : textColor },
-              // Ubah style jika tab ini yang sedang aktif
+              {
+                borderColor: activeTab === tab ? activeColor : textColor,
+                backgroundColor: inactiveColor,
+              },
               activeTab === tab && {
                 backgroundColor: activeColor,
                 borderColor: activeColor,
@@ -62,9 +74,8 @@ const CategoryTab: React.FC<CategoryTabProps> = ({
             </Text>
           </Pressable>
         ))}
-      </View>
+      </ScrollView>
 
-      {/* Konten di bawahnya berubah sesuai state */}
       {children && <View style={styles.content}>{children(activeTab)}</View>}
     </View>
   );
@@ -74,17 +85,18 @@ export default React.memo(CategoryTab);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: "100%",
+    alignSelf: "flex-start",
+    minHeight: 40,
   },
-  navContainer: {
+  scrollView: {
+    flexGrow: 0,
+  },
+  scrollContent: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
     gap: 10,
+    alignItems: "center",
   },
   btn: {
-    flex: 1,
     borderWidth: 1,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -93,7 +105,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: GlobalStyles.fontRegular,
-    fontSize: FontSizes.h3,
+    fontSize: FontSizes.h4,
   },
   textActive: {
     color: "#fff",

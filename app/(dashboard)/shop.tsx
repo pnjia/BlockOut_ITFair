@@ -34,7 +34,6 @@ const Shop = () => {
           <CategoryTab
             tabs={["All", "Top", "Shirt", "Pants", "Bottom"]}
             defaultTab="All"
-            onTabChange={(tab) => console.log("Tab changed to:", tab)}
             activeColor={Colors.tertiary}
             textColor={Colors.quarternary}
           >
