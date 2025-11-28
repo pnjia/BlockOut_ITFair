@@ -41,7 +41,7 @@ const SwitchButton: React.FC<Props> = ({
     const toValue = value ? translateXOn : 3;
     Animated.timing(animation, {
       toValue,
-      duration: 150,
+      duration: 320,
       useNativeDriver: true,
     }).start();
   }, [value, animation, translateXOn]);
