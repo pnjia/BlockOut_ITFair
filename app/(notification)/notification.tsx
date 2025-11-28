@@ -57,9 +57,14 @@ const Notification = () => {
               alignItems: "center",
               justifyContent: "space-between",
               gap: 20,
+              width: "100%",
+              borderColor: "#393E46",
+              borderWidth: 1,
+              padding: 15,
+              borderRadius: 10,
             }}
           >
-            <AlertIcon width={80} height={80} />
+            <AlertIcon width={40} height={40} />
             <TextStyle variant="body" color="quarternary">
               Notifications will appear when your screen time is about to end
               and when you successfully reach a day streak{" "}
