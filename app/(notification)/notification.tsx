@@ -55,19 +55,23 @@ const Notification = () => {
             style={{
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "space-between",
-              gap: 20,
+              gap: 12,
               width: "100%",
               borderColor: "#393E46",
               borderWidth: 1,
               padding: 15,
               borderRadius: 10,
+              backgroundColor: "#1f242d",
             }}
           >
             <AlertIcon width={40} height={40} />
-            <TextStyle variant="body" color="quarternary">
+            <TextStyle
+              variant="body"
+              color="quarternary"
+              style={{ flex: 1, flexWrap: "wrap" }}
+            >
               Notifications will appear when your screen time is about to end
-              and when you successfully reach a day streak{" "}
+              and when you successfully reach a day streak
             </TextStyle>
           </View>
         </View>
