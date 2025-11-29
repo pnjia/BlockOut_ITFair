@@ -6,7 +6,7 @@ import { Colors } from "@/constants/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { View } from "react-native";
+import { NativeModules, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MetamaskIcon from "../../assets/images/metamask.svg";
 
@@ -15,6 +15,8 @@ const WALLET_STORAGE_KEY = "metamask:walletAddress";
 const MetamaskConnected = () => {
   const params = useLocalSearchParams<{ address?: string | string[] }>();
   const [address, setAddress] = useState<string | null>(null);
+  const nativeModule =
+    NativeModules?.MetaMaskReactNativeSdk ?? NativeModules?.MetaMaskSdk;
 
   useEffect(() => {
     let isMounted = true;
@@ -52,9 +54,16 @@ const MetamaskConnected = () => {
 
   const handleDisconnect = useCallback(async () => {
     await AsyncStorage.removeItem(WALLET_STORAGE_KEY);
+    if (nativeModule?.clearSession) {
+      try {
+        await nativeModule.clearSession();
+      } catch (error) {
+        console.warn("Failed to terminate MetaMask session", error);
+      }
+    }
     setAddress(null);
     router.replace("/(wallet)/metamask");
-  }, []);
+  }, [nativeModule]);
 
   return (
     <SafeAreaView

@@ -7,6 +7,7 @@ import RetroButton from "@/components/RetroButton";
 import Spacer from "@/components/Spacer";
 import TextStyle from "@/components/TextStyle";
 import { Colors } from "@/constants/theme";
+import { metamaskSdkOptions } from "@/lib/metamaskConfig";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { MetaMaskProvider, useSDK } from "@metamask/sdk-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -19,22 +20,13 @@ import MetamaskIcon from "../../assets/images/metamask.svg";
 
 const WALLET_STORAGE_KEY = "metamask:walletAddress";
 
-const sdkOptions = {
-  dappMetadata: {
-    name: "BlockOut App",
-    url: "https://blockout.app",
-    iconUrl: "https://blockout.app/icon.png",
-    scheme: "blockout",
-  },
-};
-
 const MetamaskContent = () => {
   const [checked, setChecked] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { provider, sdk, account } = useSDK();
+  const { sdk, account } = useSDK();
 
   const persistAddress = useCallback(async (address: string | null) => {
     if (!address) {
@@ -44,24 +36,8 @@ const MetamaskContent = () => {
     await AsyncStorage.setItem(WALLET_STORAGE_KEY, address);
   }, []);
 
-  const getAccounts = useCallback(async (): Promise<string[]> => {
-    if (!provider) {
-      return [];
-    }
-
-    try {
-      const accounts = (await provider.request({
-        method: "eth_accounts",
-      })) as string[];
-      return accounts ?? [];
-    } catch (error) {
-      console.warn("Failed to fetch MetaMask accounts", error);
-      return [];
-    }
-  }, [provider]);
-
   const connectWallet = useCallback(async () => {
-    if (!sdk) {
+    if (!sdk?.connect) {
       setErrorMessage("MetaMask provider is unavailable");
       return;
     }
@@ -72,7 +48,7 @@ const MetamaskContent = () => {
     try {
       const accounts = (await sdk.connect()) ?? [];
 
-      if (!accounts || accounts.length === 0) {
+      if (accounts.length === 0) {
         throw new Error("MetaMask did not return any accounts");
       }
 
@@ -102,7 +78,7 @@ const MetamaskContent = () => {
       return;
     }
 
-    if (walletAddress) {
+    if (account && walletAddress) {
       router.push({
         pathname: "/(wallet)/metamaskConnected",
         params: { address: walletAddress },
@@ -111,7 +87,7 @@ const MetamaskContent = () => {
     }
 
     connectWallet();
-  }, [checked, connectWallet, walletAddress]);
+  }, [account, checked, connectWallet, walletAddress]);
 
   useEffect(() => {
     let isMounted = true;
@@ -122,15 +98,6 @@ const MetamaskContent = () => {
         if (cachedAddress && isMounted) {
           setWalletAddress(cachedAddress);
         }
-
-        if (provider) {
-          const accounts = await getAccounts();
-          if (accounts && accounts.length > 0 && isMounted) {
-            const normalized = getAddress(accounts[0]);
-            setWalletAddress(normalized);
-            await persistAddress(normalized);
-          }
-        }
       } catch (error) {
         console.warn("Failed to load cached MetaMask address", error);
       }
@@ -139,7 +106,7 @@ const MetamaskContent = () => {
     return () => {
       isMounted = false;
     };
-  }, [getAccounts, provider, persistAddress]);
+  }, []);
 
   useEffect(() => {
     if (!account) {
@@ -161,7 +128,7 @@ const MetamaskContent = () => {
     }
   }, [account, persistAddress]);
 
-  const isConnected = Boolean(walletAddress);
+  const isConnected = Boolean(account);
 
   const shortAddress = useMemo(() => {
     if (!walletAddress) {
@@ -283,9 +250,10 @@ const MetamaskContent = () => {
 };
 
 const Metamask = () => {
-  const isMetaMaskNativeModuleAvailable = Boolean(
-    NativeModules?.MetaMaskSdk?.initialize
-  );
+  const nativeModule =
+    NativeModules?.MetaMaskReactNativeSdk ?? NativeModules?.MetaMaskSdk;
+
+  const isMetaMaskNativeModuleAvailable = Boolean(nativeModule?.initialize);
 
   if (!isMetaMaskNativeModuleAvailable) {
     return (
@@ -321,7 +289,7 @@ const Metamask = () => {
   }
 
   return (
-    <MetaMaskProvider sdkOptions={sdkOptions}>
+    <MetaMaskProvider sdkOptions={metamaskSdkOptions}>
       <MetamaskContent />
     </MetaMaskProvider>
   );
