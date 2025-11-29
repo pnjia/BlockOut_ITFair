@@ -125,8 +125,8 @@ const Personalize = () => {
               {/* Avatar gender */}
               <View
                 style={{
-                  width: 250,
-                  height: 300,
+                  width: 180,
+                  height: 280,
                   borderWidth: 1,
                   borderColor: Colors.quarternary,
                   justifyContent: "center",
