@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
   popup: {
     width: "80%",
     backgroundColor: Colors.primary,
-    borderRadius: 16,
     padding: 24,
     borderWidth: 1,
     borderColor: Colors.quarternary,
