@@ -32,10 +32,10 @@ const ValueSlider = ({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TextStyle variant="h2" color={Colors.tertiary}>
+        <TextStyle variant="h3" color={Colors.tertiary}>
           {label}
         </TextStyle>
-        <TextStyle variant="h2" color={Colors.tertiary}>
+        <TextStyle variant="h3" color={Colors.tertiary}>
           {formattedValue}
         </TextStyle>
       </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sliderContainer: {
-    paddingVertical: 12,
+    paddingVertical: 2,
   },
   slider: {
     width: "100%",
