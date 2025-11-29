@@ -3,9 +3,8 @@ import { Colors } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
-import { Pressable, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 import AvatarIcon from "../assets/images/avatar.svg";
-import CoinIcon from "../assets/images/coin.svg";
 
 const HeaderDashboard = () => {
   const handleAvatarPress = React.useCallback(() => {
@@ -47,7 +46,10 @@ const HeaderDashboard = () => {
           justifyContent: "center",
         }}
       >
-        <CoinIcon width={30} height={30} />
+        <Image
+          source={require("../assets/images/blockoutCoin.png")}
+          style={{ width: 30, height: 30 }}
+        />
         <TextStyle variant="h3" color="quarternary">
           999 XP
         </TextStyle>
