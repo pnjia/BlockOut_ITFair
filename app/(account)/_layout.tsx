@@ -12,7 +12,7 @@ const AccountLayout = () => {
         },
         animation: "slide_from_right",
         animationDuration: 50,
-        freezeOnBlur: true,
+        freezeOnBlur: false,
       }}
     />
   );

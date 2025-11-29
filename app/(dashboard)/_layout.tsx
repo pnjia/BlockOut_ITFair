@@ -53,6 +53,8 @@ const TabBarIcon = React.memo(
   }
 );
 
+TabBarIcon.displayName = "TabBarIcon";
+
 const DashboardLayout = () => {
   const insets = useSafeAreaInsets();
 
@@ -64,7 +66,7 @@ const DashboardLayout = () => {
         lazy: true, // Lazy load tabs
         animation: "shift",
         navigationBarColor: Colors.primary,
-        freezeOnBlur: true,
+        freezeOnBlur: false,
         contentStyle: { backgroundColor: Colors.primary },
         tabBarStyle: {
           backgroundColor: Colors.primary,
@@ -104,5 +106,7 @@ const DashboardLayout = () => {
     </Tabs>
   );
 };
+
+DashboardLayout.displayName = "DashboardLayout";
 
 export default React.memo(DashboardLayout);

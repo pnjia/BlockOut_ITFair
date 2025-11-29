@@ -6,6 +6,14 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import {
+  apiFetchProfileStats,
+  apiLogin,
+  apiLoginWithGoogle,
+  apiRegister,
+  ProfileStatsResponse,
+  TokenResponse,
+} from "./authApi";
 
 // NOTE: If `@react-native-async-storage/async-storage` is not installed in your project,
 // install it with: npm install @react-native-async-storage/async-storage
@@ -30,6 +38,22 @@ type RegisterPayload = {
   phoneNumber: string;
   birthDate: string; // Format: YYYY-MM-DD
 };
+
+async function resolveUserProfile(token: string): Promise<User | null> {
+  try {
+    const profile: ProfileStatsResponse = await apiFetchProfileStats(token);
+    const resolvedUser =
+      (profile as any)?.user || (profile as any)?.data || profile;
+
+    if (resolvedUser && typeof resolvedUser === "object") {
+      return resolvedUser as User;
+    }
+  } catch (error) {
+    console.warn("AuthProvider: failed to resolve profile", error);
+  }
+
+  return null;
+}
 
 // Login payload
 type LoginPayload = {
@@ -58,8 +82,6 @@ const AuthContext = createContext<AuthState | undefined>(undefined);
 
 const AUTH_TOKEN_KEY = "@auth_token";
 const AUTH_USER_KEY = "@auth_user";
-
-const API_BASE = "http://localhost:3000/api/auth"; // per your spec
 
 async function saveToken(token: string | null) {
   if (token) {
@@ -122,28 +144,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const result: TokenResponse = await apiLogin({
+        email: email.trim(),
+        password,
       });
 
-      const json = await res.json();
-      if (!res.ok) {
-        const message = json?.message || `Login failed (${res.status})`;
-        setError(message);
-        throw new Error(message);
+      const incomingToken = result.token || (result as any).accessToken || null;
+
+      if (!incomingToken) {
+        throw new Error(
+          "Login succeeded but no token was returned by the API."
+        );
       }
 
-      // Expecting backend to return { token, user } or { accessToken, user }
-      const incomingToken = json.token || json.accessToken || null;
-      const incomingUser = json.user || json.data || null;
+      const incomingUser = await resolveUserProfile(incomingToken);
 
       await applyAuth(incomingToken, incomingUser);
+      try {
+        // eslint-disable-next-line no-console
+        console.log("[AuthProvider] login success, user:", incomingUser);
+      } catch (e) {}
       return incomingUser;
     } catch (err: any) {
-      setError(err?.message || "Login error");
-      throw err;
+      const message = err?.message || "Login error";
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -160,34 +185,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          password,
-          phoneNumber,
-          birthDate,
-        }),
+      await apiRegister({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        password,
+        phoneNumber: phoneNumber.trim(),
+        birthDate,
       });
 
-      const json = await res.json();
-      if (!res.ok) {
-        const message = json?.message || `Register failed (${res.status})`;
-        setError(message);
-        throw new Error(message);
+      const loginResult: TokenResponse = await apiLogin({
+        email: email.trim(),
+        password,
+      });
+
+      const incomingToken =
+        loginResult.token || (loginResult as any).accessToken || null;
+
+      if (!incomingToken) {
+        await applyAuth(null, null);
+        return null;
       }
 
-      const incomingToken = json.token || json.accessToken || null;
-      const incomingUser = json.user || json.data || null;
+      const incomingUser = await resolveUserProfile(incomingToken);
 
       await applyAuth(incomingToken, incomingUser);
+      try {
+        // eslint-disable-next-line no-console
+        console.log("[AuthProvider] register success, user:", incomingUser);
+      } catch (e) {}
       return incomingUser;
     } catch (err: any) {
-      setError(err?.message || "Register error");
-      throw err;
+      const message = err?.message || "Register error";
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -197,21 +228,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE}/google`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
-      });
+      const result = await apiLoginWithGoogle({ idToken });
 
-      const json = await res.json();
-      if (!res.ok) {
-        const message = json?.message || `Google login failed (${res.status})`;
-        setError(message);
-        throw new Error(message);
+      const incomingToken = result.token || (result as any).accessToken || null;
+
+      if (!incomingToken) {
+        throw new Error(
+          "Google login succeeded but no token was returned by the API."
+        );
       }
 
-      const incomingToken = json.token || json.accessToken || null;
-      const incomingUser = json.user || json.data || null;
+      const incomingUser = await resolveUserProfile(incomingToken);
 
       await applyAuth(incomingToken, incomingUser);
       return incomingUser;
@@ -243,39 +270,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     setError(null);
     try {
-      // If your backend exposes a /me endpoint, you can call it here. We'll try /me first then /user
-      const endpoints = [
-        `${API_BASE}/me`,
-        `${API_BASE}/user`,
-        `${API_BASE}/profile`,
-      ];
-      let json: any = null;
-      let ok = false;
-      for (const url of endpoints) {
-        try {
-          const res = await fetch(url, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          json = await res.json();
-          if (res.ok) {
-            ok = true;
-            break;
-          }
-        } catch (e) {
-          // try next
-        }
+      const refreshedUser = await resolveUserProfile(token);
+      if (refreshedUser) {
+        setUser(refreshedUser);
+        await saveUser(refreshedUser);
+        return refreshedUser;
       }
-
-      if (!ok) {
-        // If refresh failed, just keep current user
-        return null;
-      }
-
-      const incomingUser = json.user || json.data || json;
-      setUser(incomingUser);
-      await saveUser(incomingUser);
-      return incomingUser;
+      return null;
     } catch (err) {
       setError((err as Error).message || "Refresh user error");
       return null;

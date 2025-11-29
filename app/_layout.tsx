@@ -6,6 +6,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+// react-native-screens is disabled globally via `index.js` to avoid
+// Fabric re-parenting crashes on Android dev builds.
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -24,57 +27,59 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.primary }}>
-      <StatusBar translucent={true} backgroundColor={Colors.primary} />
-      <AuthProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: {
-              backgroundColor: Colors.primary,
-            },
-            animation: "slide_from_right",
-            animationDuration: 200,
-            freezeOnBlur: true,
-          }}
-        >
-          <Stack.Screen name="index" />
-          <Stack.Screen
-            name="(auth)"
-            options={{ animation: "fade", animationDuration: 300 }}
-          />
-          <Stack.Screen
-            name="(dashboard)"
-            options={{ animation: "fade", animationDuration: 50 }}
-          />
-          <Stack.Screen
-            name="(account)"
-            options={{
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: Colors.primary }}>
+        <StatusBar translucent={true} backgroundColor={Colors.primary} />
+        <AuthProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: Colors.primary,
+              },
               animation: "slide_from_right",
-              animationDuration: 50,
-              presentation: "card",
+              animationDuration: 200,
+              freezeOnBlur: false,
             }}
-          />
-          <Stack.Screen
-            name="(notification)"
-            options={{ animation: "fade", animationDuration: 50 }}
-          />
-          <Stack.Screen
-            name="(workout)"
-            options={{
-              animation: "fade",
-              animationDuration: 50,
-            }}
-          />
-          <Stack.Screen
-            name="(personalize)"
-            options={{
-              animation: "fade",
-              animationDuration: 50,
-            }}
-          />
-        </Stack>
-      </AuthProvider>
-    </View>
+          >
+            <Stack.Screen name="index" />
+            <Stack.Screen
+              name="(auth)"
+              options={{ animation: "fade", animationDuration: 300 }}
+            />
+            <Stack.Screen
+              name="(dashboard)"
+              options={{ animation: "fade", animationDuration: 50 }}
+            />
+            <Stack.Screen
+              name="(account)"
+              options={{
+                animation: "slide_from_right",
+                animationDuration: 50,
+                presentation: "card",
+              }}
+            />
+            <Stack.Screen
+              name="(notification)"
+              options={{ animation: "fade", animationDuration: 50 }}
+            />
+            <Stack.Screen
+              name="(workout)"
+              options={{
+                animation: "fade",
+                animationDuration: 50,
+              }}
+            />
+            <Stack.Screen
+              name="(personalize)"
+              options={{
+                animation: "fade",
+                animationDuration: 50,
+              }}
+            />
+          </Stack>
+        </AuthProvider>
+      </View>
+    </GestureHandlerRootView>
   );
 }

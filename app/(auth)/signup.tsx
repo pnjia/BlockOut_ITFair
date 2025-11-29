@@ -66,7 +66,7 @@ const Signup = () => {
         phoneNumber: phoneNumber.trim(),
         birthDate: convertDate(date),
       });
-      router.push("/(auth)/signin");
+      router.replace("/(dashboard)/blockout");
     } catch (err) {
       setLocalError(
         err instanceof Error

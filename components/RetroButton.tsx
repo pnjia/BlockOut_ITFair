@@ -41,7 +41,7 @@ const RetroButton: React.FC<RetroButtonProps> = ({
       borderColor ? { borderWidth: 1, borderColor } : {},
       isPressed && styles.buttonPressed,
     ],
-    [buttonColor, buttonTextColor, isPressed]
+    [buttonColor, borderColor, isPressed]
   );
 
   return (
@@ -69,10 +69,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     left: 8,
-    right: -8,
-    bottom: -8,
-    width: "100%",
-    height: "100%",
+    right: 0,
+    bottom: 0,
     backgroundColor: "#000000",
     // Make shadow visible on Android via elevation and ensure stacking
     elevation: 6,

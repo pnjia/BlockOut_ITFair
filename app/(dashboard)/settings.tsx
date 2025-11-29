@@ -56,6 +56,8 @@ const SettingItem = React.memo(
   )
 );
 
+SettingItem.displayName = "SettingItem";
+
 const Settings = () => {
   const handleAccountPress = React.useCallback(() => {
     router.push({
@@ -139,5 +141,7 @@ const Settings = () => {
     </SafeAreaView>
   );
 };
+
+Settings.displayName = "SettingsScreen";
 
 export default React.memo(Settings);

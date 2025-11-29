@@ -13,7 +13,7 @@ const WorkoutLayout = () => {
         navigationBarColor: Colors.primary,
         animation: "fade",
         animationDuration: 50,
-        freezeOnBlur: true,
+        freezeOnBlur: false,
       }}
     />
   );

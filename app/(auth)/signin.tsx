@@ -4,22 +4,53 @@ import Spacer from "@/components/Spacer";
 import TextStyle from "@/components/TextStyle";
 import ViewStyle from "@/components/ViewStyle";
 import { Colors } from "@/constants/theme";
+import { useAuth } from "@/lib/useAuth";
 import { router } from "expo-router";
-import React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Pressable, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GoogleIcon from "../../assets/images/google-icon.svg";
 
 const Signin = () => {
-  const handleForgotPassword = React.useCallback(() => {
+  const { login, loading, error } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  const isFormValid = useMemo(
+    () => Boolean(email.trim() && password.trim()),
+    [email, password]
+  );
+
+  const handleForgotPassword = useCallback(() => {
     router.push("/(auth)/forgotPassword");
   }, []);
 
-  const handleSignin = React.useCallback(() => {
-    router.push("/(dashboard)/blockout");
-  }, []);
+  const handleSignin = useCallback(async () => {
+    if (!isFormValid || loading) {
+      setLocalError("Please enter both email and password.");
+      return;
+    }
 
-  const handleSignup = React.useCallback(() => {
+    setLocalError(null);
+
+    try {
+      await login({
+        email: email.trim(),
+        password,
+      });
+      router.replace("/(dashboard)/blockout");
+    } catch (err) {
+      setLocalError(
+        err instanceof Error
+          ? err.message
+          : "Failed to sign in. Please try again."
+      );
+    }
+  }, [email, isFormValid, loading, login, password]);
+
+  const handleSignup = useCallback(() => {
     router.push("/(auth)/signup");
   }, []);
 
@@ -50,7 +81,15 @@ const Signin = () => {
             Email
           </TextStyle>
           <Spacer height={10} />
-          <InputStyle placeholder="blockout@gmail.com" />
+          <InputStyle
+            placeholder="blockout@gmail.com"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoComplete="email"
+            textContentType="emailAddress"
+          />
           <Spacer height={20} />
           <TextStyle
             style={{ alignSelf: "flex-start" }}
@@ -60,7 +99,14 @@ const Signin = () => {
             Password
           </TextStyle>
           <Spacer height={10} />
-          <InputStyle placeholder="********" />
+          <InputStyle
+            placeholder="********"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            textContentType="password"
+            autoComplete="password"
+          />
           <Spacer height={20} />
           <Pressable
             style={{ alignSelf: "flex-end" }}
@@ -72,9 +118,9 @@ const Signin = () => {
           </Pressable>
           <Spacer height={20} />
           <RetroButton
-            style={{ width: "100%" }}
-            title="Sign In"
-            onPress={handleSignin}
+            style={{ width: "100%", opacity: loading ? 0.6 : 1 }}
+            title={loading ? "Signing in..." : "Sign In"}
+            onPress={loading ? undefined : handleSignin}
           />
           <Spacer height={20} />
           <TextStyle variant="body" color="quarternary">
@@ -110,6 +156,16 @@ const Signin = () => {
           </Pressable>
           <Spacer height={20} />
 
+          {(localError || error) && (
+            <TextStyle
+              variant="body"
+              color="#be1a1aff"
+              style={{ marginTop: 16, textAlign: "center" }}
+            >
+              {localError || error}
+            </TextStyle>
+          )}
+
           <View
             style={{
               flexDirection: "row",
@@ -127,10 +183,10 @@ const Signin = () => {
             </Pressable>
           </View>
           <Spacer height={20} />
-          <RetroButton
+          {/* <RetroButton
             title="Personalize"
             onPress={() => router.push("/(personalize)")}
-          />
+          /> */}
         </ViewStyle>
       </ViewStyle>
     </SafeAreaView>
